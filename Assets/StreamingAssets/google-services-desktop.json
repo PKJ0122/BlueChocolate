@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "925887350584",
+    "project_id": "bluechocolate-12311",
+    "storage_bucket": "bluechocolate-12311.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925887350584:android:a1e3fd04ef466c1bc2e3cd",
+        "android_client_info": {
+          "package_name": "com.KJPark.BlueChocolate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925887350584-oamg3pgb6trn8q6qjdo2f3ea6bnvsp3t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.KJPark.BlueChocolate",
+            "certificate_hash": "11ec914564c9b832f2cfe1eda2b9f3cb54928610"
+          }
+        },
+        {
+          "client_id": "925887350584-v6t618r803f136g0j23hv97ll0ntfkri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.KJPark.BlueChocolate",
+            "certificate_hash": "18b352dee5fd471f318f6c99cd2ac8aa13c8dc58"
+          }
+        },
+        {
+          "client_id": "925887350584-abaas9pllsv00qupkok72lm69rfmtosi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1J4nfl7hPHguaSdpenCl2ovUMr0VNhbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925887350584-abaas9pllsv00qupkok72lm69rfmtosi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

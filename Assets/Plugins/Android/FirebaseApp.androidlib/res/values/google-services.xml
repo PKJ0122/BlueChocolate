@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">925887350584</string>
+  <string name="google_storage_bucket" translatable="false">bluechocolate-12311.firebasestorage.app</string>
+  <string name="project_id" translatable="false">bluechocolate-12311</string>
+  <string name="google_api_key" translatable="false">AIzaSyC1J4nfl7hPHguaSdpenCl2ovUMr0VNhbk</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC1J4nfl7hPHguaSdpenCl2ovUMr0VNhbk</string>
+  <string name="google_app_id" translatable="false">1:925887350584:android:a1e3fd04ef466c1bc2e3cd</string>
+  <string name="default_android_client_id" translatable="false">925887350584-oamg3pgb6trn8q6qjdo2f3ea6bnvsp3t.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">925887350584-abaas9pllsv00qupkok72lm69rfmtosi.apps.googleusercontent.com</string>
+</resources>

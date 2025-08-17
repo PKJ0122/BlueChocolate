@@ -12,6 +12,7 @@ public class Singleton<T> : MonoBehaviour
         {
             if (s_instance == null)
             {
+                s_instance = FindAnyObjectByType<T>();
                 if (s_instance == null)
                 {
                     s_instance = new GameObject(typeof(T).Name).AddComponent<T>();
@@ -19,21 +20,6 @@ public class Singleton<T> : MonoBehaviour
             }
 
             return s_instance;
-        }
-    }
-
-    protected virtual void Awake()
-    {
-        if (s_instance != null)
-        {
-            if (s_instance != this)
-            {
-                Destroy(this.gameObject);
-            }
-        }
-        else
-        {
-            s_instance = (T)this;
         }
     }
 }

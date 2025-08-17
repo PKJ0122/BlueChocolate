@@ -15,9 +15,8 @@ public class AdManager : Singleton<AdManager>
     //string _rewardAdId;
 
 
-    protected override void Awake()
+    void Awake()
     {
-//        base.Awake();
 //#if UNITY_EDITOR
 //        _rewardAdId = "adUnitId";
 //        _bannerViewId = "adUnitId";

@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Singleton<Player>
 {
     IDamageable _target;
 
-    float _attackpower;
 
+    void Awake()
+    {
+        _target = Enemy.Instance;
+    }
 
     public void Attack()
     {
-        _target?.TakeDamage(_attackpower);
+        _target?.TakeDamage(PlayerStat.Instance.Attack);
     }
 
-    public void SetTargetDamageable(IDamageable target)
+    public void SetDamageableTarget(IDamageable target)
     {
         _target = target;
     }

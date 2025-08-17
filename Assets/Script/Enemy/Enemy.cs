@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable, ISetEnemy
+public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
 {
     SpriteRenderer _spriteRenderer;
     EnemyData _enemyData;

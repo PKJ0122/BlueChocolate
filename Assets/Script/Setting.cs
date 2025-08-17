@@ -64,9 +64,8 @@ public class Setting : Singleton<Setting>
     public event Action<bool> OnDarkModeChange;
 
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         OnDarkModeChange += v =>
         {
             Camera.main.backgroundColor = v ? darkColor : baseColor;

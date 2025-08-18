@@ -1,5 +1,4 @@
 //using GoogleMobileAds.Api;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,20 +14,21 @@ public class AdManager : Singleton<AdManager>
     //string _rewardAdId;
 
 
-    void Awake()
+    protected override void Awake()
     {
-//#if UNITY_EDITOR
-//        _rewardAdId = "adUnitId";
-//        _bannerViewId = "adUnitId";
-//#else
-//        _rewardAdId = "ca-app-pub-5639813524802030/8692399306";
-//        _bannerViewId = "ca-app-pub-5639813524802030/9059490571";
-//#endif
+        //base.Awake();
+        //#if UNITY_EDITOR
+        //        _rewardAdId = "adUnitId";
+        //        _bannerViewId = "adUnitId";
+        //#else
+        //        _rewardAdId = "ca-app-pub-5639813524802030/8692399306";
+        //        _bannerViewId = "ca-app-pub-5639813524802030/9059490571";
+        //#endif
 
-//        MobileAds.Initialize(initStatus => { });
+        //        MobileAds.Initialize(initStatus => { });
 
-//        DontDestroyOnLoad(this);
-//        RequestBanner();
+        //        DontDestroyOnLoad(this);
+        //        RequestBanner();
     }
 
     public void AdShow()
@@ -80,7 +80,7 @@ public class AdManager : Singleton<AdManager>
         //    {
         //        LodingUi.Hide();
         //        _rewardedAd.Show();
-                yield break;
+        yield break;
         //    }
 
         //    yield return _delay;

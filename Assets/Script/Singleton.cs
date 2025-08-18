@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Singleton<T> : MonoBehaviour
@@ -20,6 +18,18 @@ public class Singleton<T> : MonoBehaviour
             }
 
             return s_instance;
+        }
+    }
+
+    protected virtual void Awake()
+    {
+        if (s_instance == null)
+        {
+            s_instance = (T)this;
+        }
+        else if (s_instance != this)
+        {
+            Destroy(gameObject);
         }
     }
 }

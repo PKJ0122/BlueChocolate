@@ -15,8 +15,9 @@ public class SoundManager : Singleton<SoundManager>
     int _maxChannel;
 
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _audioSources = GetComponentsInChildren<AudioSource>();
         _soundData = Resources.Load<SoundData>("SoundData");
         _maxChannel = _audioSources.Length - 1;

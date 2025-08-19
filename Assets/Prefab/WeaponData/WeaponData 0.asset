@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: WeaponData 0
   m_EditorClassIdentifier: 
   Upgrade: 0
-  Damage: 0
+  Attack: 1
   EnhanceCost: 0
   EnhancementProbability: 0

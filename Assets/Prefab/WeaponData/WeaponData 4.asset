@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50507a75e743cea4eaee719b7734626e, type: 3}
   m_Name: WeaponData 4
   m_EditorClassIdentifier: 
-  Upgrade: 0
-  Damage: 0
+  Upgrade: 1
+  Attack: 0
   EnhanceCost: 0
   EnhancementProbability: 0

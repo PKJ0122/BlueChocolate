@@ -15,6 +15,8 @@ public class HpBarUI : UIBase
         _slider = transform.Find("Panel/Slider - HpBar").GetComponent<Slider>();
         _target = Enemy.Instance.transform;
         _sliderRect = _slider.GetComponent<RectTransform>();
+
+        Enemy.Instance.HealthChanged += Refuresh;
     }
 
     void Update()
@@ -30,5 +32,10 @@ public class HpBarUI : UIBase
             out localPos);
 
         _sliderRect.localPosition = localPos;
+    }
+
+    void Refuresh(float value)
+    {
+        _slider.value = value;
     }
 }

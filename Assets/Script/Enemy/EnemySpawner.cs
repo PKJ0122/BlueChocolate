@@ -20,7 +20,7 @@ public class EnemySpawner : Singleton<EnemySpawner>
     {
         int selectSlimeNum = PlayerData.Instance.Container.SelectSlimeNum;
         EnemyData enemyData = enemyDatas.enemyDatas[selectSlimeNum];
-        Enemy.Instance.SetEnemy(enemyData);
+        SetEnemyInfo(enemyData);
     }
 
     public void SetEnemyInfo(EnemyData enemyData)

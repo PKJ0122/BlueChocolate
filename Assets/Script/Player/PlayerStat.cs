@@ -1,14 +1,22 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class PlayerStat : Singleton<PlayerStat>
 {
     public float Attack { get; private set; }
     float _baseAttack;
 
+
     readonly List<StatModifier> _modifiers = new();
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+        int myWeaponUpgrade = PlayerData.Instance.Container.WeaponUpgrade;
+        _baseAttack = WeaponManager.Instance.GetWeaponData(myWeaponUpgrade).Attack;
+        CalculateFinalStats();
+    }
 
     public void AddModifier(StatModifier mod)
     {

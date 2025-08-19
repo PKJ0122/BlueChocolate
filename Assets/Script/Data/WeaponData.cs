@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     public int Upgrade;
-    public float Damage;
+    public float Attack;
     public int EnhanceCost;
     public float EnhancementProbability;
 }

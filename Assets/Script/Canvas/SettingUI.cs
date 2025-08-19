@@ -73,7 +73,6 @@ public class SettingUI : UIBase
         _ad.onClick.AddListener(() =>
         {
             SoundManager.Instance.SFX_Play(SFX_List.ButtonClick);
-            AdManager.Instance.AdShow();
         });
         _gameRestart.onClick.AddListener(() =>
         {

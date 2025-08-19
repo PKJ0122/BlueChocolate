@@ -7,8 +7,26 @@ public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
     private readonly int _spawn = Animator.StringToHash("IsSpawn");
     private readonly int _die = Animator.StringToHash("IsDie");
 
-    float _maxHp = 10000;
-    float _hp = 10000;
+    float _maxHp;
+    float _hp;
+    public float Hp
+    {
+        get => _hp;
+        set
+        {
+            _hp = value;
+
+            if (_maxHp != 0)
+            {
+                HealthChanged?.Invoke(_hp / _maxHp);
+            }
+            if (_hp <= 0)
+            {
+                EnemySpawner.Instance.EnemyDie();
+                _animator.SetTrigger(_die);
+            }
+        }
+    }
 
     SpriteRenderer _spriteRenderer;
     Animator _animator;
@@ -45,28 +63,19 @@ public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
 
     public void TakeDamage(float damage)
     {
-        if (_maxHp == 0 || _hp < 0) return;
+        if (_maxHp == 0 || _hp <= 0) return;
 
-        _hp -= damage;
-
+        Hp -= damage;
         TakeDamaged?.Invoke(damage);
-        HealthChanged?.Invoke(_hp / _maxHp);
-
-        if (_hp < 0)
-        {
-            EnemySpawner.Instance.EnemyDie();
-            _animator.SetTrigger(_die);
-        }
     }
 
     public void SetEnemy(EnemyData enemyData)
     {
         if (enemyData == null) return;
 
-        EnemySpawner.Instance.EnemyDie();
         _enemyData = enemyData;
         _maxHp = enemyData.Hp;
-        _hp = enemyData.Hp;
+        Hp = enemyData.Hp;
         Spawn();
     }
 
@@ -83,5 +92,7 @@ public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
     public void CompleteDeSpawn()
     {
         EnemySpawner.Instance.EnemyDeSpawn();
+        Hp = _enemyData.Hp;
+        Spawn();
     }
 }

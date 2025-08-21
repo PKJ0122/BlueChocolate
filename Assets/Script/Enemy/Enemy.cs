@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
 {
     private readonly int _spawn = Animator.StringToHash("IsSpawn");
+    private readonly int _reSpawn = Animator.StringToHash("IsReSpawn");
     private readonly int _die = Animator.StringToHash("IsDie");
 
     float _maxHp;
@@ -22,8 +24,7 @@ public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
             }
             if (_hp <= 0)
             {
-                EnemySpawner.Instance.EnemyDie();
-                _animator.SetTrigger(_die);
+                Die();
             }
         }
     }
@@ -84,15 +85,30 @@ public class Enemy : Singleton<Enemy>, IDamageable, ISetEnemy
         _animator.SetTrigger(_spawn);
     }
 
-    public void CompleteSpawn()
+
+    public void ReSpawn()
+    {
+        _animator.SetTrigger(_reSpawn);
+    }
+
+    [Preserve]
+    void CompleteSpawn()
     {
         EnemySpawner.Instance.EnemySpawn();
     }
 
-    public void CompleteDeSpawn()
+    [Preserve]
+    void CompleteDeSpawn()
     {
         EnemySpawner.Instance.EnemyDeSpawn();
         Hp = _enemyData.Hp;
-        Spawn();
+        ReSpawn();
+    }
+
+    void Die()
+    {
+        EnemySpawner.Instance.EnemyDie();
+        _animator.SetTrigger(_die);
+        PlayerData.Instance.Container.Gold += _enemyData.Gold;
     }
 }

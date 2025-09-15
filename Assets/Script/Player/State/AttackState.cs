@@ -16,6 +16,7 @@ public class AttackState : IState
         Debug.Log($"상태 진입: {targetEnemy.name} 공격 시작");
         player.CurrentTarget = targetEnemy;
         player.ChangeAnimation("IsAttack");
+        player.ChangeIRotate(typeof(AttackMode));
     }
 
     public void Update()
@@ -50,5 +51,6 @@ public class AttackState : IState
         Debug.Log($"상태 종료: {targetEnemy.name} 공격 종료");
         player.ChangeAnimation("IsIdle");
         player.CurrentTarget = null;
+        player.ChangeIRotate(typeof(ChaseMode));
     }
 }

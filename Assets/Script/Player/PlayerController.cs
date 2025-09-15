@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("EnemySpawner가 할당되지 않았습니다!");
             return;
         }
+        Init();
+        ChangeIRotate(typeof(ChaseMode));
         // 시작 상태를 추격 상태로 설정
         ChangeState(new ChaseState(this, FindClosestEnemy));
 

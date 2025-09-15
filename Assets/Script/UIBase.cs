@@ -1,4 +1,3 @@
-//using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -27,7 +26,7 @@ public class UIBase : MonoBehaviour
         _graphicRaycaster = GetComponent<GraphicRaycaster>();
         _eventSystem = EventSystem.current;
 
-        UIManager.Instance.Register(this);
+        UIManager.Instance.RegisterUI(this);
     }
 
     public virtual void Show()
@@ -44,28 +43,5 @@ public class UIBase : MonoBehaviour
 
         _canvas.enabled = false;
         UIManager.Instance.PopUI(this);
-    }
-
-    protected void ShowEffect(Transform transform)
-    {
-        //Sequence seq = DOTween.Sequence();
-
-        //seq.Append(transform.DOScale(1.1f, 0.2f));
-        //seq.Append(transform.DOScale(1f, 0.1f));
-
-        //seq.Play();
-    }
-
-    protected void HideEffect(Transform transform)
-    {
-        //Sequence seq = DOTween.Sequence();
-
-        //seq.Append(transform.DOScale(1.1f, 0.1f));
-        //seq.Append(transform.DOScale(0.2f, 0.2f));
-
-        //seq.Play().OnComplete(() =>
-        //{
-        //    Hide();
-        //});
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : SingletonMonoBase<SoundManager>
 {
     const float MUTE = -80f;
     const float NOT_MUTE = 0f;
@@ -38,15 +38,6 @@ public class SoundManager : Singleton<SoundManager>
             source.outputAudioMixerGroup = mixer.FindMatchingGroups("SFX")[0];
             source.loop = false;
         }
-
-        Setting.Instance.OnBgmMuteChange += v =>
-        {
-            mixer.SetFloat("BGM", v ? MUTE : NOT_MUTE);
-        };
-        Setting.Instance.OnSfxMuteChange += v =>
-        {
-            mixer.SetFloat("SFX", v ? MUTE : NOT_MUTE);
-        };
 
         SceneManager.sceneLoaded += (s, l) =>
         {

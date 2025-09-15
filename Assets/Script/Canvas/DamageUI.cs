@@ -12,7 +12,6 @@ public class DamageUI : UIBase
     protected override void Awake()
     {
         base.Awake();
-        Enemy.Instance.TakeDamaged += OnDamage;
         poolInit();
     }
 
@@ -25,7 +24,7 @@ public class DamageUI : UIBase
         RectTransform poolRect = poolObject.GetComponent<RectTransform>();
         CanvasGroup poolCanvasGroup = poolObject.GetComponent<CanvasGroup>();
 
-        Vector3 targetPos = Enemy.Instance.transform.position;
+        Vector3 targetPos = Vector3.zero;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(targetPos);
 
         Vector2 localPos;

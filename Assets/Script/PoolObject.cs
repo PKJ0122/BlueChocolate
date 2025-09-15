@@ -3,15 +3,16 @@ using UnityEngine.Pool;
 
 public class PoolObject : MonoBehaviour
 {
-    IObjectPool<PoolObject> _pool;
+    IObjectPool<PoolObject> _myPool;
 
-    public void SetPool(IObjectPool<PoolObject> pool)
+    public PoolObject SetPool(IObjectPool<PoolObject> pool)
     {
-        _pool = pool;
+        _myPool = pool;
+        return this;
     }
 
-    public void Release()
+    public virtual void Release()
     {
-        _pool.Release(this);
+        _myPool.Release(this);
     }
 }

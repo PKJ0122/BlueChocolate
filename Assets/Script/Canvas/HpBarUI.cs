@@ -12,11 +12,6 @@ public class HpBarUI : UIBase
     protected override void Awake()
     {
         base.Awake();
-        _slider = transform.Find("Panel/Slider - HpBar").GetComponent<Slider>();
-        _target = Enemy.Instance.transform;
-        _sliderRect = _slider.GetComponent<RectTransform>();
-
-        Enemy.Instance.HealthChanged += Refuresh;
     }
 
     void Update()

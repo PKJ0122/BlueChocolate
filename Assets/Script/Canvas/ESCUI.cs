@@ -23,7 +23,6 @@ public class ESCUI : UIBase
         _hide.onClick.AddListener(() =>
         {
             SoundManager.Instance.SFX_Play(SFX_List.ButtonClick);
-            HideEffect(_ui);
         });
     }
 
@@ -36,6 +35,5 @@ public class ESCUI : UIBase
     {
         base.Show();
         SoundManager.Instance.SFX_Play(SFX_List.UiUpDown);
-        ShowEffect(_ui);
     }
 }

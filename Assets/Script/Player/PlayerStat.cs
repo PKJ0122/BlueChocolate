@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class PlayerStat : Singleton<PlayerStat>
+public class PlayerStat : SingletonMonoBase<PlayerStat>
 {
     public float Attack { get; private set; }
     float _baseAttack;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : Singleton<WeaponManager>
+public class WeaponManager : SingletonMonoBase<WeaponManager>
 {
     #region WeaponData Dictionary
     private Dictionary<int, WeaponData> _weaponData;

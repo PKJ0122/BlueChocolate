@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BuffManager : Singleton<BuffManager>
+public class BuffManager : SingletonMonoBase<BuffManager>
 {
     const float TICK_TIME = 1f;
 

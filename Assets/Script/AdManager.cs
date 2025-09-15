@@ -2,7 +2,7 @@ using GoogleMobileAds.Api;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AdManager : Singleton<AdManager>
+public class AdManager : SingletonMonoBase<AdManager>
 {
     RewardedAd _rewardedAd;
     public RewardedAd RewardedAd => _rewardedAd;

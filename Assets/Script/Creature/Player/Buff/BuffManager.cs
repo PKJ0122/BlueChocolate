@@ -13,7 +13,7 @@ public class BuffManager : SingletonMonoBase<BuffManager>
     {
         base.Awake();
         _container = PlayerData.Instance.Container;
-        _stat = PlayerStat.Instance;
+        //_stat = ;
     }
 
     readonly WaitForSecondsRealtime _delay = new(TICK_TIME);

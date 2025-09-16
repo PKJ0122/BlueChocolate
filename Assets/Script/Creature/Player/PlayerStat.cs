@@ -1,44 +1,51 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerStat : SingletonMonoBase<PlayerStat>
+public class PlayerStat : MonoBehaviour, IStat
 {
-    float _baseAttack;
-    public float Attack { get; private set; }
+    public event Action<float> OnTakeDamage;
+    public event Action OnDied;
+    public bool IsDead => CurrentHealth <= 0;
+
+    float _baseAttackDamage;
+    public float AttackDamage { get; private set; }
 
 
     float _maxHealth = 100f;
     public float MaxHealth => _maxHealth;
     public float CurrentHealth { get; private set; }
 
-    public bool IsDead => CurrentHealth <= 0;
+
 
 
     readonly List<StatModifier> _modifiers = new();
 
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
         int myWeaponUpgrade = PlayerData.Instance.Container.WeaponUpgrade;
-        _baseAttack = WeaponManager.Instance.GetWeaponData(myWeaponUpgrade).Attack;
+        _baseAttackDamage = WeaponManager.Instance.GetWeaponData(myWeaponUpgrade).Attack;
         CalculateFinalStats();
         CurrentHealth = _maxHealth;
     }
 
     public void DecreaseHealth(float damage)
     {
-        if (IsDead) return; // 이미 죽었다면 무시
+        if (IsDead) return;
 
         CurrentHealth -= damage;
-        if (CurrentHealth < 0)
-        {
-            CurrentHealth = 0;
-        }
+        if (CurrentHealth < 0) CurrentHealth = 0;
 
-        Debug.Log($"플레이어 체력: {CurrentHealth} / {MaxHealth}");
-        // OnHealthChanged?.Invoke(); // HP UI 업데이트가 필요할 때 이벤트를 발생시킴
+        OnTakeDamage?.Invoke(damage);
+        UIManager.Instance.Get<DamageUI>().GetDamageOfPlayer(damage, transform.position);
+
+        if (IsDead)
+        {
+            OnDied?.Invoke();
+            // 몬스터는 보통 자기 자신만 죽으면 되므로 static 이벤트는 필요 없음
+        }
     }
 
     public void AddModifier(StatModifier mod)
@@ -55,16 +62,16 @@ public class PlayerStat : SingletonMonoBase<PlayerStat>
 
     private void CalculateFinalStats()
     {
-        Attack = _baseAttack;
+        AttackDamage = _baseAttackDamage;
 
         foreach (var mod in _modifiers.Where(m => m.ModType == StatModType.Flat))
         {
-            Attack += mod.Value;
+            AttackDamage += mod.Value;
         }
 
         foreach (var mod in _modifiers.Where(m => m.ModType == StatModType.PercentMult))
         {
-            Attack *= mod.Value;
+            AttackDamage *= mod.Value;
         }
     }
 }

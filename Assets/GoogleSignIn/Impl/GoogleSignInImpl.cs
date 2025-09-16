@@ -171,12 +171,12 @@ namespace Google.Impl {
     internal static extern UIntPtr GoogleSignIn_GetUserId(HandleRef self,
       [In, Out] byte[] bytes, UIntPtr len);
 
-    // Gets the Unity player activity.
+    // Gets the Unity _player activity.
     // For iOS, this returns Zero.
     private static IntPtr GetPlayerActivity() {
 #if UNITY_ANDROID
       UnityEngine.AndroidJavaClass jc = new UnityEngine.AndroidJavaClass(
-        "com.unity3d.player.UnityPlayer");
+        "com.unity3d._player.UnityPlayer");
       return jc.GetStatic<UnityEngine.AndroidJavaObject>("currentActivity")
                .GetRawObject();
 #else

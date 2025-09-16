@@ -4,12 +4,14 @@ using UnityEngine;
 public class ChaseState : IState
 {
     private readonly PlayerController player;
-    private readonly Func<Enemy> findClosestEnemyFunc;
+    private readonly Func<EnemyAI> findClosestEnemyFunc;
+    private float _attackRange;
 
-    public ChaseState(PlayerController player, Func<Enemy> findClosestEnemyFunc)
+    public ChaseState(PlayerController player, Func<EnemyAI> findClosestEnemyFunc, float attackRange)
     {
         this.player = player;
         this.findClosestEnemyFunc = findClosestEnemyFunc;
+        this._attackRange = attackRange;
     }
 
     public void Enter()
@@ -21,7 +23,7 @@ public class ChaseState : IState
 
     public void Update()
     {
-        Enemy target = findClosestEnemyFunc();
+        EnemyAI target = findClosestEnemyFunc();
 
         if (target != null)
         {
@@ -29,7 +31,7 @@ public class ChaseState : IState
             float distance = Vector3.Distance(player.transform.position, target.transform.position);
 
             // 사거리 내에 들어왔다면 공격 상태로 전환
-            if (distance <= player.attackRange)
+            if (distance <= _attackRange)
             {
                 // new AttackState(...) 대신 PlayerController가 가진 인스턴스를 사용
                 player.ChangeState(player.AttackState);

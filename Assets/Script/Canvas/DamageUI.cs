@@ -5,41 +5,55 @@ using UnityEngine.Pool;
 
 public class DamageUI : UIBase
 {
-    PoolObject _damagePrefab;
-    IObjectPool<PoolObject> _damagePool;
+    const string PLAYER_DAMAGE_SKIN = "Text (TMP) - PlayerDamageSkin";
+    const string ENEMY_DAMAGE_SKIN = "Text (TMP) - EnemyDamageSkin";
+
+    readonly Vector2 _offset = new(0, 150);
+
+    PoolObject _playerDamageSkinPrefab;
+    PoolObject _enemyDamageSkinPrefab;
 
 
     protected override void Awake()
     {
         base.Awake();
-        poolInit();
+        PoolInit();
     }
 
-    public void OnDamage(float damage)
+    public void GetDamageOfPlayer(float damage, Vector3 worldPosition)
     {
-        PoolObject poolObject = _damagePool.Get();
+        OnDamageSkin(damage, worldPosition, PLAYER_DAMAGE_SKIN);
+    }
+
+    public void GetDamageOfEnemy(float damage, Vector3 worldPosition)
+    {
+        OnDamageSkin(damage, worldPosition, ENEMY_DAMAGE_SKIN);
+    }
+
+    void OnDamageSkin(float damage, Vector3 worldPosition, string poolObjectKey)
+    {
+        PoolObject poolObject = ObjectPool.Instance.Get(poolObjectKey)
+                                           .Get();
+
+        poolObject.transform.SetParent(transform, false);
         poolObject.GetComponent<TMP_Text>()
                   .text = damage.ToString();
 
         RectTransform poolRect = poolObject.GetComponent<RectTransform>();
         CanvasGroup poolCanvasGroup = poolObject.GetComponent<CanvasGroup>();
 
-        Vector3 targetPos = Vector3.zero;
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(targetPos);
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(_canvas.worldCamera, worldPosition);
 
-        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.transform as RectTransform,
+                                                                screenPoint,
+                                                                _canvas.worldCamera,
+                                                                out Vector2 anchoredPosition);
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _canvas.transform as RectTransform,
-            screenPos,
-            _canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main,
-            out localPos);
-
-        poolRect.localPosition = localPos;
+        poolRect.anchoredPosition = anchoredPosition;
 
         Sequence seq = DOTween.Sequence();
 
-        Vector2 endPos = localPos + new Vector2(0, 150);
+        Vector2 endPos = anchoredPosition + _offset;
 
         seq.Append(
             poolRect.DOAnchorPos(endPos, 0.6f).SetEase(Ease.OutCubic)
@@ -54,33 +68,12 @@ public class DamageUI : UIBase
         });
     }
 
-    void poolInit()
+    void PoolInit()
     {
-        _damagePrefab = Resources.Load<PoolObject>("Text (TMP) - DamageSkin");
+        _playerDamageSkinPrefab = Resources.Load<PoolObject>(PLAYER_DAMAGE_SKIN);
+        ObjectPool.Instance.CreatePool(PLAYER_DAMAGE_SKIN, _playerDamageSkinPrefab, 2);
 
-        _damagePool = new ObjectPool<PoolObject>(
-            createFunc: () =>
-            {
-                PoolObject damageObject = Instantiate(_damagePrefab);
-                damageObject.transform.SetParent(transform,false);
-                damageObject.SetPool(_damagePool);
-                return damageObject;
-            },
-            actionOnGet: (damage) =>
-            {
-                damage.gameObject.SetActive(true);
-            },
-            actionOnRelease: (damage) =>
-            {
-                damage.gameObject.SetActive(false);
-            },
-            actionOnDestroy: (damage) =>
-            {
-                Destroy(damage.gameObject);
-            },
-            collectionCheck: false,
-            defaultCapacity: 5,
-            maxSize: 10
-            );
+        _enemyDamageSkinPrefab = Resources.Load<PoolObject>(ENEMY_DAMAGE_SKIN);
+        ObjectPool.Instance.CreatePool(ENEMY_DAMAGE_SKIN, _enemyDamageSkinPrefab, 2);
     }
 }

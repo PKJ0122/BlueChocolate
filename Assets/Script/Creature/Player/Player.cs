@@ -5,7 +5,7 @@ public class Player : SingletonMonoBase<Player>
 {
     public PlayerDamageHandler PlayerDamageHandler { get; private set; } 
     public PlayerController PlayerController { get; private set; }
-
+    public PlayerStat PlayerStat { get; private set; }
 
 
     protected override void Awake()
@@ -13,5 +13,6 @@ public class Player : SingletonMonoBase<Player>
         base.Awake();
         PlayerDamageHandler = GetComponent<PlayerDamageHandler>();
         PlayerController = GetComponent<PlayerController>();
+        PlayerStat = GetComponent<PlayerStat>();
     }
 }

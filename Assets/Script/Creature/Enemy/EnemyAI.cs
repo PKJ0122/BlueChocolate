@@ -1,24 +1,28 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class Enemy : MonoBehaviour
+[RequireComponent(typeof(MonsterStat))]
+public class EnemyAI : MonoBehaviour
 {
-    public float health = 100f;
     private EnemySpawner spawner; // 자신을 생성한 스포너
-
-    public bool IsDead => health <= 0;
-
-    [Header("이동 및 공격 설정")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float attackRange = 1.5f; // 이 거리 안으로 들어오면 공격
-    [SerializeField] private float attackDamage = 10f;
 
     private Transform playerTransform;
     private Rigidbody2D rb;
+    
+    private float _moveSpeed;
+    
+    
+    public MonsterStat MonsterStat { get; private set; }
+
+
 
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        MonsterStat = GetComponent<MonsterStat>();
+        float baseSpeed = MonsterStat.MoveSpeed;
+        _moveSpeed = Random.Range(baseSpeed * 0.5f, baseSpeed * 1.5f);
     }
 
     void Start()
@@ -37,7 +41,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // 물리 기반 로직은 FixedUpdate에서 처리하는 것이 안정적입니다.
+    private void OnEnable()
+    {
+        MonsterStat.OnDied += Die;
+    }
+    private void OnDisable()
+    {
+        MonsterStat.OnDied -= Die;
+    }
+
     void FixedUpdate()
     {
         if (playerTransform == null) return;
@@ -46,7 +58,7 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
         // 1. 공격 범위 안에 있는 경우
-        if (distanceToPlayer <= attackRange)
+        if (distanceToPlayer <= MonsterStat.AttackRange)
         {
             Attack();
         }
@@ -56,19 +68,10 @@ public class Enemy : MonoBehaviour
             // 플레이어를 향하는 방향 계산
             Vector2 direction = (playerTransform.position - transform.position).normalized;
             // 계산된 방향으로 속도 설정
-            rb.linearVelocity = direction * moveSpeed;
+            rb.linearVelocity = direction * _moveSpeed;
         }
-    }
 
-    private void Attack()
-    {
-        PlayerDamageHandler damageHandler = playerTransform.GetComponent<PlayerDamageHandler>();
-        if (damageHandler != null)
-        {
-            Vector2 knockbackDirection = (playerTransform.position - transform.position).normalized;
-            // TakeDamage 메서드를 호출하는 것은 동일
-            damageHandler.TakeDamage(attackDamage, knockbackDirection);
-        }
+        ChangeIRotate();
     }
 
     public void Setup(EnemySpawner spawner)
@@ -76,32 +79,41 @@ public class Enemy : MonoBehaviour
         this.spawner = spawner;
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float damage)
     {
-        if (IsDead) return;
+        MonsterStat.TakeDamage(damage);
+    }
 
-        health -= amount;
-        Debug.Log($"{gameObject.name}이(가) 피해를 입었습니다. 남은 체력: {health}");
-
-        if (IsDead)
+    void Attack()
+    {
+        PlayerDamageHandler damageHandler = playerTransform.GetComponent<PlayerDamageHandler>();
+        if (damageHandler != null)
         {
-            Die();
+            Vector2 knockbackDirection = (playerTransform.position - transform.position).normalized;
+            // TakeDamage 메서드를 호출하는 것은 동일
+            damageHandler.TakeDamage(MonsterStat.AttackDamage, knockbackDirection);
         }
     }
 
-    private void Die()
+    void ChangeIRotate()
+    {
+        float playerX = playerTransform.transform.position.x;
+        float myX = transform.position.x;
+
+        if (playerX > myX)
+        {
+            transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        }
+        else if (playerX < myX)
+        {
+            transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+        }
+    }
+
+    void Die()
     {
         Debug.Log($"{gameObject.name}이(가) 죽었습니다.");
         // 죽었을 때 스포너에게 알림
         spawner.OnEnemyKilled(this);
-        // 오브젝트 파괴
-        Destroy(gameObject, 0.1f);
     }
-
-    private void OnDisable()
-    {
-        spawner.OnEnemyKilled(this);
-    }
-
-
 }

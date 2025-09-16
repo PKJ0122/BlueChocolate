@@ -3,7 +3,7 @@ using UnityEngine;
 public class AttackState : IState
 {
     private readonly PlayerController player;
-    private Enemy currentAttackTarget;
+    private EnemyAI currentAttackTarget;
 
     // 생성자에서 더 이상 특정 target을 받지 않음
     public AttackState(PlayerController player)
@@ -14,7 +14,7 @@ public class AttackState : IState
     public void Enter()
     {
         // 상태 진입 시 PlayerController의 현재 타겟을 나의 공격 타겟으로 설정
-        this.currentAttackTarget = player.CurrentTarget;
+        currentAttackTarget = player.CurrentTarget;
 
         if (currentAttackTarget == null)
         {
@@ -30,7 +30,7 @@ public class AttackState : IState
 
     public void Update()
     {
-        if (currentAttackTarget == null || currentAttackTarget.IsDead || !currentAttackTarget.gameObject.activeSelf)
+        if (currentAttackTarget == null || !currentAttackTarget.gameObject.activeSelf)
         {
             // 타겟이 죽었다면 현재 모드에 맞는 추격 상태로 전환
             player.ChangeState(player.Auto ? player.AutoChaseState : player.ChaseState);

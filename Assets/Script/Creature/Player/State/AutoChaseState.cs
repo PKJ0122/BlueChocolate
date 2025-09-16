@@ -4,12 +4,14 @@ using UnityEngine;
 public class AutoChaseState : IState
 {
     private readonly PlayerController player;
-    private readonly Func<Enemy> findClosestEnemyFunc;
+    private readonly Func<EnemyAI> findClosestEnemyFunc;
+    private float _attackRange;
 
-    public AutoChaseState(PlayerController player, Func<Enemy> findClosestEnemyFunc)
+    public AutoChaseState(PlayerController player, Func<EnemyAI> findClosestEnemyFunc, float attackRange)
     {
         this.player = player;
         this.findClosestEnemyFunc = findClosestEnemyFunc;
+        this._attackRange = attackRange;
     }
 
     public void Enter()
@@ -21,14 +23,14 @@ public class AutoChaseState : IState
 
     public void Update()
     {
-        Enemy target = findClosestEnemyFunc();
+        EnemyAI target = findClosestEnemyFunc();
 
         if (target != null)
         {
             player.CurrentTarget = target;
             float distance = Vector3.Distance(player.transform.position, target.transform.position);
 
-            if (distance > player.attackRange)
+            if (distance > _attackRange)
             {
                 player.AutoMove();
             }

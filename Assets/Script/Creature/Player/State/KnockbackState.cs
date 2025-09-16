@@ -2,45 +2,44 @@ using UnityEngine;
 
 public class KnockbackState : IState
 {
-    private readonly PlayerController player;
-    private readonly PlayerDamageHandler playerDH;
-    private readonly float knockbackDuration;
-    private float knockbackTimer;
-    private float friction = 5f; // 마찰 계수 (높을수록 빨리 멈춤)
+    readonly PlayerController _player;
+    readonly PlayerDamageHandler _playerDH;
+    readonly float _knockbackDuration;
+    readonly float _knockbackForce;
+    readonly float _friction;
 
-    public KnockbackState(PlayerController player, float duration)
+    float _knockbackTimer;
+
+    public KnockbackState(PlayerController player, float duration, float knockbackForce, float friction)
     {
-        this.player = player;
-        playerDH = player.GetComponent<PlayerDamageHandler>();
-        this.knockbackDuration = duration;
+        _player = player;
+        _playerDH = player.GetComponent<PlayerDamageHandler>();
+        _knockbackDuration = duration;
+        _knockbackForce = knockbackForce;
+        _friction = friction;
     }
 
     public void Enter()
     {
-        // Debug.Log("상태 진입: 넉백");
-        knockbackTimer = 0f;
+        _knockbackTimer = 0f;
 
-        // PlayerController의 메서드를 호출하여 _currentVelocity에 넉백 속도를 즉시 적용
-        float force = playerDH.knockbackForce;
-        player.ApplyKnockbackVelocity(player.lastKnockbackDirection, force);
+        float force = _knockbackForce;
+        _player.ApplyKnockbackVelocity(_player.LastKnockbackDirection, force);
+        _playerDH.StartKnockbackCooldown();
     }
 
     public void Update()
     {
-        // 넉백이 진행되는 동안 속도를 점진적으로 감소시킴 (자연스러운 감속)
-        player.DecayVelocity(friction);
+        _player.DecayVelocity(_friction);
 
-        knockbackTimer += Time.deltaTime;
-        if (knockbackTimer >= knockbackDuration)
+        _knockbackTimer += Time.deltaTime;
+        if (_knockbackTimer >= _knockbackDuration)
         {
-            player.ChangeState(player.Auto ? player.AutoChaseState : player.ChaseState);
+            _player.ChangeState(_player.Auto ? _player.AutoChaseState : _player.ChaseState);
         }
     }
 
     public void Exit()
     {
-        // Debug.Log("상태 종료: 넉백");
-        playerDH.StartKnockbackCooldown();
-        // StopMove()는 이제 필요 없습니다. DecayVelocity가 이미 속도를 거의 0으로 만들었기 때문입니다.
     }
 }

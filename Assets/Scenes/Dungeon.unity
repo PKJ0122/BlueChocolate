@@ -651,6 +651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 323951586}
   - component: {fileID: 323951585}
+  - component: {fileID: 323951587}
   m_Layer: 0
   m_Name: DungeonBackGrond
   m_TagString: Untagged
@@ -723,11 +724,23 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3422453, y: 1.3422453, z: 1.3422453}
+  m_LocalScale: {x: 1.5523512, y: 1.5523512, z: 1.5523512}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323951587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323951584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e639de8bad486b2429840355a2e7b866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &328251629
 GameObject:
   m_ObjectHideFlags: 0
@@ -4036,6 +4049,8 @@ GameObject:
   - component: {fileID: 95898481945431396}
   - component: {fileID: 95898481945431395}
   - component: {fileID: 95898481945431397}
+  - component: {fileID: 95898481945431399}
+  - component: {fileID: 95898481945431398}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -4297,9 +4312,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 999306306}
   moveSpeed: 5
-  attackRange: 2
-  attackDamage: 25
+  attackRange: 5
+  attackDamage: 1
   attackCooldown: 1
+  knockbackDuration: 0.2
+  lastKnockbackDirection: {x: 0, y: 0}
+--- !u!114 &95898481945431398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290715154992970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092ef6f379399b44c8fad33ea35b5365, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &95898481945431399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290715154992970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ef5db0a37d99347acbbd40a71881db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackForce: 25
+  knockbackInvulnerabilityDuration: 1.5
 --- !u!212 &212321163278394626
 SpriteRenderer:
   m_ObjectHideFlags: 0

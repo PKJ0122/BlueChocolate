@@ -46,6 +46,6 @@ public class AutoChaseState : IState
 
     public void Exit()
     {
-        Debug.Log("상태 종료: 자동 추격");
+        player.StopMove();
     }
 }

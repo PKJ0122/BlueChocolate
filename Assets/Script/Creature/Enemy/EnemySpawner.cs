@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
     void Start()
     {
         // 테스트를 위해 5마리 소환
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 1; i++)
         {
             Vector3 spawnPos = new Vector3(Random.Range(-10, 10), Random.Range(-10, 10), 0);
             GameObject enemyObj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);

@@ -12,11 +12,14 @@ public class PlayerController : MonoBehaviour
     public float attackRange = 1f;
     public float attackDamage = 25f;
     public float attackCooldown = 1f;
+    [SerializeField] private float knockbackDuration = 0.2f; // 넉백 상태 지속 시간
 
     // --- 상태 객체들을 미리 생성 (GC 최적화) ---
     public ChaseState ChaseState { get; private set; }
     public AttackState AttackState { get; private set; }
     public AutoChaseState AutoChaseState { get; private set; }
+
+    public KnockbackState KnockbackState { get; private set; }
     // ------------------------------------------
 
     private IState currentState;
@@ -34,6 +37,11 @@ public class PlayerController : MonoBehaviour
     // --- 애니메이터 해시 캐싱 (최적화) ---
     private readonly int hashIsAttack = Animator.StringToHash("IsAttack");
     private readonly int hashIsIdle = Animator.StringToHash("IsIdle");
+    private readonly int hashSpeed = Animator.StringToHash("Speed"); // Speed 파라미터도 캐싱
+
+    private Vector2 _currentVelocity;
+
+
 
     private bool _auto;
     public bool Auto
@@ -64,6 +72,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private float animationSmoothTime = 0.03f;
+    // --- 애니메이션 스무딩을 위한 변수 ---
+    private float _animatorSpeed; // 애니메이터에 실제로 전달될, 부드럽게 처리된 속도 값
+    private float _speedChangeVelocity; // SmoothDamp 내부 계산에 사용될 참조 변수 (신경 쓸 필요 없음)
+    public Vector2 lastKnockbackDirection;
+
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -73,6 +88,7 @@ public class PlayerController : MonoBehaviour
         ChaseState = new ChaseState(this, FindClosestEnemy);
         AttackState = new AttackState(this); // 더 이상 생성자에 target을 넘기지 않음
         AutoChaseState = new AutoChaseState(this, FindClosestEnemy);
+        KnockbackState = new KnockbackState(this, knockbackDuration);
 
         // 회전 모드 초기화
         InitRotateModes();
@@ -94,11 +110,50 @@ public class PlayerController : MonoBehaviour
         ChangeIRotate(typeof(ChaseMode));
     }
 
+    void Update()
+    {
+        currentState?.Update();
+    }
+
     void FixedUpdate()
     {
-        // 상태와 회전 로직은 물리 업데이트에서 처리
-        currentState?.Update();
+        // Update에서 계산된 속도를 Rigidbody에 적용
+        rb.linearVelocity = _currentVelocity;
+
+        // 회전 로직 실행
         _iRotate?.ChangeRotation();
+
+        // 경계 제한
+        EnforceBounds();
+        // 블랜드 트리 로직
+        BrendTreatment();
+    }
+
+    void BrendTreatment()
+    {
+        float targetSpeed = _currentVelocity.magnitude;
+
+        // _animatorSpeed 값을 targetSpeed 값으로 animationSmoothTime에 걸쳐 부드럽게 변경
+        _animatorSpeed = Mathf.SmoothDamp(_animatorSpeed, targetSpeed, ref _speedChangeVelocity, animationSmoothTime);
+
+        // 최종적으로 부드럽게 처리된 _animatorSpeed 값을 애니메이터에 전달
+        animator.SetFloat(hashSpeed, _animatorSpeed);
+    }
+
+    private void EnforceBounds()
+    {
+        if (DungeonBoundary.Instance == null) return;
+
+        Bounds bounds = DungeonBoundary.Instance.Boundary;
+
+        // 현재 위치를 경계의 min, max 값 사이로 제한(Clamp)
+        Vector2 clampedPosition = new Vector2(
+            Mathf.Clamp(transform.position.x, bounds.min.x, bounds.max.x),
+            Mathf.Clamp(transform.position.y, bounds.min.y, bounds.max.y)
+        );
+
+        // 제한된 위치로 플레이어 위치 설정
+        transform.position = clampedPosition;
     }
 
     // 상태 변경 메서드 (이제 new 키워드를 사용하지 않음)
@@ -127,22 +182,41 @@ public class PlayerController : MonoBehaviour
 
 
     #region 행동 메서드
+    /// <summary>
+    /// 넉백을 위해 _currentVelocity를 직접 설정하는 새로운 메서드
+    /// </summary>
+    public void ApplyKnockbackVelocity(Vector2 knockbackDirection, float knockbackForce)
+    {
+        _currentVelocity = knockbackDirection * knockbackForce;
+    }
 
+    /// <summary>
+    /// 현재 속도를 점진적으로 줄이는 메서드 (넉백 상태에서 사용)
+    /// </summary>
+    public void DecayVelocity(float friction)
+    {
+        // Lerp를 사용하여 현재 속도를 0으로 부드럽게 감속시킵니다.
+        _currentVelocity = Vector2.Lerp(_currentVelocity, Vector2.zero, friction * Time.deltaTime);
+    }
     public void Move()
     {
-        rb.linearVelocity = MoveInput * moveSpeed;
+        _currentVelocity = MoveInput * moveSpeed;
     }
 
     public void AutoMove()
     {
-        if (CurrentTarget == null) return;
+        if (CurrentTarget == null)
+        {
+            _currentVelocity = Vector2.zero;
+            return;
+        }
         Vector2 direction = (CurrentTarget.transform.position - transform.position).normalized;
-        rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
+        _currentVelocity = direction * moveSpeed;
     }
 
     public void StopMove()
     {
-        rb.linearVelocity = Vector2.zero;
+        _currentVelocity = Vector2.zero;
     }
 
     public void PerformAttack()

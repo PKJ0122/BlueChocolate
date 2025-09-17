@@ -1,20 +1,24 @@
+using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(MonsterStat))]
 public class EnemyAI : MonoBehaviour
 {
+    const float HIT_EFFECT_DURATION = 0.3f;
+
     private EnemySpawner spawner; // 자신을 생성한 스포너
 
     private Transform playerTransform;
     private Rigidbody2D rb;
-    
+
     private float _moveSpeed;
-    
-    
+
+
     public MonsterStat MonsterStat { get; private set; }
 
 
+    Material _material;
+    int _hitEffectHash = Shader.PropertyToID("_FlashAmount");
 
 
     void Awake()
@@ -23,6 +27,7 @@ public class EnemyAI : MonoBehaviour
         MonsterStat = GetComponent<MonsterStat>();
         float baseSpeed = MonsterStat.MoveSpeed;
         _moveSpeed = Random.Range(baseSpeed * 0.5f, baseSpeed * 1.5f);
+        _material = GetComponent<SpriteRenderer>().material;
     }
 
     void Start()
@@ -44,10 +49,12 @@ public class EnemyAI : MonoBehaviour
     private void OnEnable()
     {
         MonsterStat.OnDied += Die;
+        MonsterStat.OnTakeDamage += PlayHitEffect;
     }
     private void OnDisable()
     {
         MonsterStat.OnDied -= Die;
+        MonsterStat.OnTakeDamage -= PlayHitEffect;
     }
 
     void FixedUpdate()
@@ -82,6 +89,12 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(float damage)
     {
         MonsterStat.TakeDamage(damage);
+    }
+
+    public void PlayHitEffect(float damage)
+    {
+        _material.DOKill();
+        _material.DOFloat(1f, _hitEffectHash, HIT_EFFECT_DURATION / 2).SetLoops(2, LoopType.Yoyo);
     }
 
     void Attack()

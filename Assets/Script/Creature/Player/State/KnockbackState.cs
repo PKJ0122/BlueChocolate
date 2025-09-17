@@ -35,7 +35,7 @@ public class KnockbackState : IState
         _knockbackTimer += Time.deltaTime;
         if (_knockbackTimer >= _knockbackDuration)
         {
-            _player.ChangeState(_player.Auto ? _player.AutoChaseState : _player.ChaseState);
+            _player.ChangeState(_player.MoveState);
         }
     }
 

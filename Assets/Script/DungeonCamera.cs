@@ -24,12 +24,12 @@ public class DungeonCamera : MonoBehaviour
 
     void OnEnable()
     {
-        _playerStat.OnTakeDamage += Shake;
+        //_playerStat.OnTakeDamage += Shake;
     }
 
     void OnDisable()
     {
-        _playerStat.OnTakeDamage -= Shake;
+        //_playerStat.OnTakeDamage -= Shake;
     }
     private void LateUpdate()
     {

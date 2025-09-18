@@ -1,13 +1,13 @@
 using GoogleMobileAds.Api;
 using System.Threading.Tasks;
-using UnityEngine;
 
 public class AdManager : SingletonMonoBase<AdManager>
 {
     RewardedAd _rewardedAd;
-    public RewardedAd RewardedAd => _rewardedAd;
+    BannerView _bannerView;
 
     string _rewardAdId;
+    string _bannerViewId;
 
 
     protected override void Awake()
@@ -15,11 +15,15 @@ public class AdManager : SingletonMonoBase<AdManager>
         base.Awake();
 #if UNITY_EDITOR
         _rewardAdId = "adUnitId";
+        _bannerViewId = "adUnitId";
 #else
                 _rewardAdId = "ca-app-pub-5639813524802030/8692399306";
+                _bannerViewId = "ca-app-pub-5639813524802030/4724661029";
 #endif
 
         MobileAds.Initialize(initStatus => { });
+
+        RequestBanner();
     }
 
     public async Task<AdShowResult> LoadAndShowAd()
@@ -75,5 +79,15 @@ public class AdManager : SingletonMonoBase<AdManager>
         {
             showTcs.TrySetResult(AdShowResult.Canceled);
         };
+    }
+
+    void RequestBanner()
+    {
+        _bannerView?.Destroy();
+        AdSize adSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+        _bannerView = new BannerView(_bannerViewId, adSize, AdPosition.Bottom);
+
+        AdRequest request = new();
+        _bannerView.LoadAd(request);
     }
 }

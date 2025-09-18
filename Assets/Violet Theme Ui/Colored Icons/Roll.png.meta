@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 64105460c44937a4c9f1e3e1d6ed595d
+guid: 8b073ef44460267448c2c8a122daf418
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4978087485088945278
-    second: White Cross Swords_0
+      213: 210437701246608060
+    second: "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_0"
   - first:
-      213: 8909946324045971829
-    second: White Cross Swords_1
+      213: -4261980081541356142
+    second: "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_1"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,7 +113,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: iOS
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,7 +126,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
+    buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -142,13 +142,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: White Cross Swords_0
+      name: "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 24
-        width: 247
-        height: 248
+        x: 183
+        y: 532
+        width: 700
+        height: 329
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -157,20 +157,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e745b815138b51540800000000000000
-      internalID: 4978087485088945278
+      spriteID: cb2672e69ff9be200800000000000000
+      internalID: 210437701246608060
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: White Cross Swords_1
+      name: "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_1"
       rect:
         serializedVersion: 2
-        x: 49
-        y: 24
-        width: 463
-        height: 464
+        x: 141
+        y: 157
+        width: 727
+        height: 334
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 571ce8c89fc76ab70800000000000000
-      internalID: 8909946324045971829
+      spriteID: 295efef52b76ad4c0800000000000000
+      internalID: -4261980081541356142
       vertices: []
       indices: 
       edges: []
@@ -199,8 +199,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      White Cross Swords_0: 4978087485088945278
-      White Cross Swords_1: 8909946324045971829
+      "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_0": 210437701246608060
+      "ChatGPT Image 2025\uB144 9\uC6D4 18\uC77C \uC624\uD6C4 09_05_06-Photoroom_1": -4261980081541356142
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

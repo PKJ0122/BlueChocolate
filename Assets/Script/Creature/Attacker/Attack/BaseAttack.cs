@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BaseAttack : MonoBehaviour
 {
+    bool at;
+
     public float speed = 20f;
     public float lifetime = 3f;
 
@@ -12,11 +14,17 @@ public class BaseAttack : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
+    private void OnEnable()
+    {
+        at = false;
+    }
+
     // 다른 트리거 콜라이더와 충돌했을 때
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out EnemyAI enemyAI))
+        if (other.TryGetComponent(out EnemyAI enemyAI) && !at)
         {
+            at = true;
             enemyAI.TakeDamage(1);
             Deactivate();
         }

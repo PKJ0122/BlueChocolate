@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDisable()
     {
-        if (!JoystickController.Instance.IsApplicationQuit)
+        if (!JoystickController.IsApplicationQuit)
         {
             JoystickController.Instance.OnJoystickMoved -= SetMoveInput;
         }

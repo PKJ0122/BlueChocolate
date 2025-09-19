@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour
 {
     const float HIT_EFFECT_DURATION = 0.3f;
 
-    private EnemySpawner spawner; // 자신을 생성한 스포너
+    private SpawnManager spawner; // 자신을 생성한 스포너
 
     private Transform playerTransform;
     private Rigidbody2D rb;
@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         MonsterStat = GetComponent<MonsterStat>();
         float baseSpeed = MonsterStat.MoveSpeed;
-        _moveSpeed = Random.Range(baseSpeed * 0.5f, baseSpeed * 1.5f);
+        _moveSpeed = Random.Range(baseSpeed * 0.5f, baseSpeed * 2.3f);
         _material = GetComponent<SpriteRenderer>().material;
     }
 
@@ -81,7 +81,7 @@ public class EnemyAI : MonoBehaviour
         ChangeIRotate();
     }
 
-    public void Setup(EnemySpawner spawner)
+    public void Setup(SpawnManager spawner)
     {
         this.spawner = spawner;
     }
@@ -125,8 +125,8 @@ public class EnemyAI : MonoBehaviour
 
     void Die()
     {
-        Debug.Log($"{gameObject.name}이(가) 죽었습니다.");
-        // 죽었을 때 스포너에게 알림
-        spawner.OnEnemyKilled(this);
+        _material.DOKill();
+        gameObject.GetComponent<PoolObject>().Release();
+        SpawnManager.Instance.activeEnemies.Remove(this);
     }
 }

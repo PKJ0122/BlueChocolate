@@ -25,7 +25,7 @@ public class BaseAttack : MonoBehaviour
         if (other.TryGetComponent(out EnemyAI enemyAI) && !at)
         {
             at = true;
-            enemyAI.TakeDamage(1);
+            enemyAI.TakeDamage(10);
             Deactivate();
         }
     }

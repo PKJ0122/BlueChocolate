@@ -51,13 +51,13 @@ public class Attacker : MonoBehaviour
     #region Å¸°Ù Å½»ö ·ÎÁ÷
     public EnemyAI FindClosestEnemy()
     {
-        EnemySpawner enemySpawner = EnemySpawner.Instance;
+        SpawnManager enemySpawner = SpawnManager.Instance;
         EnemyAI closestEnemy = null;
         float minDistanceSqr = float.MaxValue;
 
-        if (enemySpawner.livingEnemies.Count == 0) return null;
+        if (enemySpawner.activeEnemies.Count == 0) return null;
 
-        foreach (EnemyAI enemy in enemySpawner.livingEnemies)
+        foreach (EnemyAI enemy in enemySpawner.activeEnemies)
         {
             float distanceSqr = (enemy.transform.position - transform.position).sqrMagnitude;
             if (distanceSqr < minDistanceSqr)

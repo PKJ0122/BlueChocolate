@@ -3,8 +3,8 @@ using UnityEngine;
 public abstract class SingletonMonoBase<T> : MonoBehaviour
     where T : SingletonMonoBase<T>
 {
-    bool _isApplicationQuit = false;
-    public bool IsApplicationQuit => _isApplicationQuit;
+    static bool s_isApplicationQuit = false;
+    public static bool IsApplicationQuit => s_isApplicationQuit;
 
 
     static T s_instance;
@@ -40,6 +40,6 @@ public abstract class SingletonMonoBase<T> : MonoBehaviour
 
     protected virtual void OnApplicationQuit()
     {
-        _isApplicationQuit = true;
+        s_isApplicationQuit = true;
     }
 }

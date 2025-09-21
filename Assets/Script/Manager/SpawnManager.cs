@@ -63,7 +63,6 @@ public class SpawnManager : MonoBehaviour
         }
 
         ObjectPool.Instance.CreatePool("z", _p, 20);
-        _zz.onClick.AddListener(StartNextWave);
     }
 
     void Update()

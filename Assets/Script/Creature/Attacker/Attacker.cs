@@ -1,9 +1,8 @@
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class Attacker : MonoBehaviour
 {
-    [SerializeField]public BaseAttack _p;
+    [SerializeField] public BaseAttack _p;
 
     public ChaseState ChaseState { get; private set; }
     public AttackState AttackState { get; private set; }
@@ -48,6 +47,7 @@ public class Attacker : MonoBehaviour
         ChaseState = new ChaseState(this, FindClosestEnemy, 5f);
         AttackState = new AttackState(this);
     }
+
     #region Å¸°Ù Å½»ö ·ÎÁ÷
     public EnemyAI FindClosestEnemy()
     {

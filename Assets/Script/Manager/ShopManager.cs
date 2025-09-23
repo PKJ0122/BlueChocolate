@@ -34,9 +34,12 @@ public class ShopManager : SingletonMonoBase<ShopManager>
     public Action<int> OnExpChanged;
 
     ReRollProbability[] _currentProbabilityData;
-    string[] _currentShop = new string[6];
+    public ReRollProbability[] CurrentProbabilityData => _currentProbabilityData;
 
+    readonly string[] _currentShop = new string[6];
+    public string[] CurrentShop => _currentShop;
 
+    public Action<string[]> ShopChanged;
 
     protected override void Awake()
     {
@@ -44,7 +47,6 @@ public class ShopManager : SingletonMonoBase<ShopManager>
         _rollData = Resources.Load<ReRollData>("ReRollData");
         _costDatas = Resources.Load<CostDatas>("CostDatas");
         _currentProbabilityData = _rollData.ReRollProbabilitieDics[Level].reRollProbabilities;
-
     }
 
     public string Probability()
@@ -107,5 +109,12 @@ public class ShopManager : SingletonMonoBase<ShopManager>
     public void LevelUp()
     {
         Level++;
+    }
+
+    public void BuySlime(int count)
+    {
+        if (_currentShop[count].Equals(string.Empty)) return;
+
+        // 슬라임 구매처리
     }
 }
